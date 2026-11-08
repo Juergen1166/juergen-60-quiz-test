@@ -81,7 +81,7 @@ $('resetBtn').addEventListener('click', () => {
 
   const text = document.createElement('p');
   text.textContent =
-    'Möchtest du wirklich alle Spieler, Antworten und Punktestände löschen? Die 20 Quizfragen bleiben erhalten.';
+    'Möchtest du das Quiz zurücksetzen? Alle Antworten und Punkte werden gelöscht. Die Spieler bleiben angemeldet und können direkt wieder mitspielen. Die 20 Quizfragen bleiben erhalten.';
   box.append(text);
 
   const cancel = document.createElement('button');
@@ -91,7 +91,7 @@ $('resetBtn').addEventListener('click', () => {
   cancel.addEventListener('click', () => overlay.remove());
 
   const yes = document.createElement('button');
-  yes.textContent = 'Ja, zurücksetzen';
+  yes.textContent = 'Ja, Quiz zurücksetzen';
   yes.className = 'danger';
   yes.style.margin = '8px';
 

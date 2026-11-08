@@ -275,6 +275,45 @@
       }
     }
 
+
+    /* Feinschliff: kompaktere Antwortfelder und größere Frage-Motive */
+    .presentation .question-art {
+      width: clamp(135px, 14vw, 175px);
+      min-height: clamp(135px, 14vw, 175px);
+      margin: 8px auto 14px;
+      padding: 12px;
+      border-radius: 30px;
+      gap: 8px;
+    }
+    .presentation .question-art-icon {
+      font-size: clamp(66px, 7vw, 88px);
+    }
+    .presentation .bicycle-helmet {
+      width: clamp(90px, 10vw, 125px);
+      height: auto;
+    }
+    .presentation .question-art-caption {
+      max-width: 260px;
+      font-size: clamp(12px, 1.25vw, 16px);
+      line-height: 1.15;
+    }
+    #options {
+      max-width: 1120px;
+      column-gap: 24px;
+      row-gap: 14px;
+      margin: 14px auto;
+    }
+    #options li {
+      width: 100%;
+      max-width: 520px;
+      justify-self: center;
+      min-height: 76px;
+      padding: 12px 18px;
+      border-width: 2px;
+      border-radius: 12px;
+      font-size: clamp(20px, 2.15vw, 30px);
+    }
+
   </style>
 </head>
 <body>
@@ -320,6 +359,6 @@
 
   <script src="config.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script type="module" src="presentation.js?v=compact2col1"></script>
+  <script type="module" src="presentation.js?v=compactrefine1"></script>
 </body>
 </html>

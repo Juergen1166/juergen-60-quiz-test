@@ -1,0 +1,220 @@
+
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const cfg = window.QUIZ_CONFIG;
+const $ = id => document.getElementById(id);
+
+const QUESTION_ART = {
+  1: ['🚲', 'Jürgens Fahrradwelt'],
+  2: ['🚗', 'Das erste Auto'],
+  3: ['🌡️', 'Wer dreht die Heizung ab?'],
+  4: ['🏢', 'Jürgens Arbeitsplatz'],
+  5: ['🏍️', 'Das erste Motorrad'],
+  6: ['🚲', 'Sicher unterwegs mit dem Fahrrad'],
+  7: ['🎸', 'Jürgens Lieblingsmusik'],
+  8: ['🚴', 'Kilometer sammeln'],
+  9: ['🎭', 'Ein Abend im Theaterhaus'],
+  10: ['🎙️', 'Jürgens Lieblingspodcast'],
+  11: ['📱', 'Instagram & Co.'],
+  12: ['❤️', 'Eine gemeinsame Geschichte'],
+  13: ['🌍', 'Reisen in die Ferne'],
+  14: ['🏡', 'Das erste gemeinsame Zuhause'],
+  15: ['🎂', 'Geburtstage feiern'],
+  16: ['🐈', 'Die Katzenfamilie'],
+  17: ['🧳', 'Eine Reise, die warten musste'],
+  18: ['📚', 'Silkes Lesewelt'],
+  19: ['👔', 'Jürgens Stil'],
+  20: ['🔤', 'Wörter mit besonderem Dreh']
+};
+
+
+function showQuestionArt(questionNumber) {
+  const art = document.getElementById('questionArt');
+  if (!art) return;
+
+  const [icon, caption] =
+    QUESTION_ART[Number(questionNumber)] || ['🎉', 'Geburtstagsquiz'];
+
+  art.replaceChildren();
+
+  if (Number(questionNumber) === 6) {
+    const helmet = document.createElement('img');
+    helmet.src = new URL('./Fahrradhelm%20mit%20rotem%20Streifen.png', import.meta.url).href;
+    helmet.alt = 'Fahrradhelm';
+    helmet.className = 'question-art-icon bicycle-helmet';
+    art.append(helmet);
+  } else {
+    const symbol = document.createElement('span');
+    symbol.className = 'question-art-icon';
+    symbol.textContent = icon;
+    art.append(symbol);
+  }
+
+  const label = document.createElement('span');
+  label.className = 'question-art-caption';
+  label.textContent = caption;
+  art.append(label);
+}
+
+
+
+
+const db = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+
+const playerUrl = new URL('index.html', location.href).href;
+
+// QR-Code in der Begrüßung
+new QRCode($('qr'), {
+  text: playerUrl,
+  width: 220,
+  height: 220
+});
+
+// QR-Code dauerhaft in der Ecke
+new QRCode($('qrCorner'), {
+  text: playerUrl,
+  width: 120,
+  height: 120
+});
+
+async function refresh() {
+  try {
+    const { data, error } = await db.rpc('quiz_state', {
+      p_player_id: null
+    });
+
+    if (error) throw error;
+
+    const q = data.question;
+
+    if (data.finished) {
+      $('welcome').classList.add('hidden');
+      $('game').classList.add('hidden');
+      $('qrCorner').classList.add('hidden');
+      const scores = data.scores || [];
+      if (data.final_list_shown) {
+        $('finalPodium').classList.add('hidden');
+        $('finalRanking').classList.remove('hidden');
+        const rows = $('finalRows');
+        rows.innerHTML = '';
+        let previous = null, place = 0;
+        scores.forEach((p, i) => {
+          if (previous === null || p.score !== previous) place = i + 1;
+          previous = p.score;
+          const row = document.createElement('div');
+          row.className = 'final-row';
+          const rank = document.createElement('span'); rank.className = 'place'; rank.textContent = place + '.';
+          const name = document.createElement('span'); name.textContent = p.name;
+          const score = document.createElement('strong'); score.textContent = p.score + ' Punkte';
+          row.append(rank, name, score); rows.append(row);
+        });
+      } else {
+        $('finalRanking').classList.add('hidden');
+        $('finalPodium').classList.remove('hidden');
+        const podium = $('podium'); podium.innerHTML = '';
+        const top = scores.slice(0, 3);
+        const positions = [
+          { cls: 'podium-second', medal: '🥈', place: '2' },
+          { cls: 'podium-first', medal: '👑', place: '1' },
+          { cls: 'podium-third', medal: '🥉', place: '3' }
+        ];
+        [top[1], top[0], top[2]].forEach((p, i) => {
+          const pos = positions[i];
+          const card = document.createElement('div'); card.className = 'podium-person ' + pos.cls;
+          if (p) {
+            const medal = document.createElement('div'); medal.className = 'medal'; medal.textContent = pos.medal;
+            const name = document.createElement('div'); name.className = 'winner-name'; name.textContent = p.name;
+            const score = document.createElement('div'); score.className = 'winner-score'; score.textContent = p.score + ' Punkte';
+            card.append(medal, name, score);
+          } else {
+            const empty = document.createElement('div'); empty.className = 'winner-name'; empty.textContent = '—'; card.append(empty);
+          }
+          const block = document.createElement('div'); block.className = 'podium-block'; block.textContent = pos.place; card.append(block);
+          podium.append(card);
+        });
+        const confetti = $('confetti');
+        if (!confetti.dataset.ready) {
+          const pieces = ['🎊','✨','🎉','⭐','🎈'];
+          for (let i=0;i<45;i++) {
+            const piece=document.createElement('span');
+            piece.textContent=pieces[i%pieces.length];
+            piece.style.left=(i*37%100)+'%';
+            piece.style.animationDelay=((i%12)*-0.4)+'s';
+            piece.style.animationDuration=(4+(i%5))+'s';
+            confetti.append(piece);
+          }
+          confetti.dataset.ready='1';
+        }
+      }
+      return;
+    }
+
+    $('finalPodium').classList.add('hidden');
+    $('finalRanking').classList.add('hidden');
+
+    // Noch keine Frage gestartet
+    if (!q) {
+      $('welcome').classList.remove('hidden');
+      $('game').classList.add('hidden');
+      $('qrCorner').classList.add('hidden');
+      return;
+    }
+
+    $('welcome').classList.add('hidden');
+    $('game').classList.remove('hidden');
+    $('qrCorner').classList.remove('hidden');
+
+    const revealed = data.revealed;
+
+    // Frage und Antwortmöglichkeiten nur während der Fragerunde
+    $('questionNumber').classList.toggle('hidden', revealed);
+    $('questionText').classList.toggle('hidden', revealed);
+    $('options').classList.toggle('hidden', revealed);
+
+    // Frage anzeigen
+    $('questionNumber').textContent =
+      `Frage ${q.number} von ${q.total}`;
+
+    showQuestionArt(q.number);
+    $('questionText').textContent = q.text;
+
+    $('options').innerHTML = '';
+
+    q.options.forEach(opt => {
+      const li = document.createElement('li');
+      li.textContent = opt;
+      $('options').append(li);
+    });
+
+    // Nach Auflösung: richtige Antwort und Rangliste
+    if (revealed) {
+      const correctAnswers = (data.correct_indices || [])
+        .map(i => q.options[i]);
+
+      $('answerMessage').textContent =
+        'Richtige Antwort: ' + correctAnswers.join(', ');
+
+      $('answerMessage').classList.remove('hidden');
+      $('ranking').classList.remove('hidden');
+
+      $('leaderboard').innerHTML = '';
+
+      (data.scores || []).slice(0, 10).forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = `${p.name} – ${p.score} Punkte`;
+        $('leaderboard').append(li);
+      });
+
+    } else {
+      $('answerMessage').textContent = '';
+      $('answerMessage').classList.add('hidden');
+      $('ranking').classList.add('hidden');
+    }
+
+  } catch (e) {
+    console.error('Präsentationsfehler:', e);
+  }
+}
+
+refresh();
+setInterval(refresh, 3000);

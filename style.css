@@ -1,0 +1,243 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #fff9ed, #f3e4c9);
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #49391f;
+  min-height: 100vh;
+}
+
+.wrap {
+  max-width: 760px;
+  margin: auto;
+  padding: 22px 16px 42px;
+}
+
+header {
+  color: #65491e;
+  text-align: center;
+  padding: 22px 0 26px;
+}
+
+.eyebrow {
+  font-size: .85rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  color: #bd872e;
+}
+
+header h1 {
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  margin: .3rem 0;
+  color: #76531d;
+}
+
+header p {
+  margin: .4rem 0;
+  color: #806b4d;
+}
+
+.panel {
+  background: #fffdf8;
+  border: 1px solid #ead9b9;
+  border-radius: 18px;
+  padding: 22px;
+  margin: 0 0 18px;
+  box-shadow: 0 10px 30px #795b2a18;
+}
+
+.panel h2 {
+  margin-top: 0;
+  color: #76531d;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  margin: 14px 0 6px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d8c7a8;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  background: #fff;
+  color: #49391f;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 13px 18px;
+  background: #bd872e;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 12px;
+  width: 100%;
+}
+
+button:hover {
+  background: #9f6c1e;
+}
+
+button.secondary {
+  background: #806b4d;
+}
+
+button.danger {
+  background: #a8433b;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.msg {
+  min-height: 1.4em;
+  color: #a8433b;
+  font-weight: 600;
+}
+
+.answers {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.answer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid #ddcfb6;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fffaf0;
+}
+
+.answer input {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  flex: none;
+}
+
+.answer.correct {
+  background: #e5f5e8;
+  border-color: #27864a;
+}
+
+.answer.wrong {
+  background: #fff0e8;
+  border-color: #cf7240;
+}
+
+ol {
+  padding-left: 26px;
+}
+
+li {
+  padding: 4px 0;
+}
+
+.room {
+  text-align: center;
+  padding: 10px;
+  background: #f5ead5;
+  border-radius: 10px;
+}
+
+#qr {
+  display: flex;
+  justify-content: center;
+  margin: 15px;
+}
+
+#qr img {
+  padding: 8px;
+  background: white;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.buttons button {
+  margin: 0;
+}
+
+footer {
+  text-align: center;
+  color: #806b4d;
+  font-size: .85rem;
+  margin-top: 25px;
+}
+
+@media(max-width:450px) {
+  .buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding: 17px;
+  }
+}
+
+
+/* Fragebilder: kleine, festliche Motive passend zu jeder Quizfrage */
+.question-art {
+  width: 150px;
+  min-height: 150px;
+  margin: 12px auto 16px;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid #e6c98f;
+  border-radius: 28px;
+  background: radial-gradient(circle at 30% 20%, #fffef9, #f4e3bf 78%);
+  box-shadow: 0 9px 24px #795b2a20, inset 0 1px 0 #ffffff;
+}
+.question-art-icon {
+  display: block;
+  font-size: 52px;
+  line-height: 1.05;
+}
+.question-art-caption {
+  display: block;
+  max-width: 150px;
+  color: #80612d;
+  font-size: 10px;
+  line-height: 1.15;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: .02em;
+}
+#questionTitle {
+  text-align: center;
+  line-height: 1.25;
+}
+@media (max-width: 450px) {
+  .question-art {
+    width: 92px;
+    min-height: 92px;
+    border-radius: 24px;
+    margin: 12px auto 16px;
+  }
+  .question-art-icon { font-size: 42px; }
+}
+
+/* Gezeichneter Fahrradhelm für Frage 6 */
+.bicycle-helmet { width: 88px; height: 66px; flex: none; }

@@ -1,0 +1,226 @@
+
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz – Präsentation</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+   body {
+  background: linear-gradient(135deg, #fff9ed, #f3e4c9);
+  color: #49391f;
+  font-family: system-ui, sans-serif;
+}
+    .presentation {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px;
+      text-align: center;
+    }
+    .presentation h1 {
+      font-size: clamp(36px, 5vw, 72px);
+    }
+    .presentation h2 {
+      font-size: clamp(30px, 4vw, 60px);
+    }
+    .presentation p,
+    .presentation li {
+      font-size: clamp(22px, 2.5vw, 36px);
+    }
+    #qr {
+      display: inline-block;
+      background: white;
+      padding: 14px;
+      margin: 20px;
+    }
+    #qr img {
+      display: block;
+    }
+    #options {
+      list-style: none;
+      padding: 0;
+    }
+    #options li {
+      margin: 16px auto;
+      padding: 16px;
+      border: 2px solid #64748b;
+      border-radius: 12px;
+      max-width: 900px;
+    }
+    #options li.correct {
+      background: #166534;
+      border-color: #4ade80;
+    }
+  #leaderboard {
+  display: inline-block;
+  text-align: left;
+  width: 90%;
+  max-width: 1300px;
+  font-size: clamp(46px, 6vw, 76px);
+  font-weight: 600;
+  line-height: 1.6;
+  padding-left: 90px;
+}
+
+#leaderboard li {
+  margin-bottom: 25px;
+  padding-left: 15px;
+}
+    .hidden {
+      display: none !important;
+    }
+    .qr-corner {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: white;
+      padding: 8px;
+      border-radius: 8px;
+    }
+    .qr-corner img {
+      display: block;
+      width: 120px;
+      height: 120px;
+    }
+    .title-photo {
+  display: block;
+  width: 100%;
+  max-width: 650px;
+  max-height: 420px;
+  object-fit: cover;
+  margin: 25px auto;
+  border-radius: 24px;
+  border: 5px solid white;
+  box-shadow: 0 12px 35px #0004;
+}
+  .welcome-poster {
+  display: block;
+  width: 100%;
+  max-width: 1500px;
+  max-height: calc(100vh - 40px);
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+    .presentation .question-art {
+      width: clamp(130px, 17vw, 190px);
+      min-height: clamp(130px, 17vw, 190px);
+      margin: 12px auto 22px;
+      border-radius: 38px;
+    }
+    .presentation .question-art-icon {
+      font-size: clamp(64px, 8vw, 104px);
+    }
+    .presentation .bicycle-helmet { width: clamp(100px, 12vw, 150px); height: auto; }
+    .presentation .question-art-caption {
+      max-width: 240px;
+      font-size: clamp(12px, 1.2vw, 16px);
+    }
+    .presentation #questionText {
+      max-width: 1200px;
+      margin: 10px auto 24px;
+      line-height: 1.15;
+    }
+    .final-screen {
+      min-height: 90vh; color: #fff; background: radial-gradient(circle at top, #18385a, #07172b 70%);
+      border: 5px solid #d8a832; border-radius: 24px; padding: 28px 18px; position: relative; overflow: hidden;
+    }
+    .final-screen h1 { color: #ffd76a; margin: 8px 0; }
+    .final-subtitle { color: #fff0bf; font-size: clamp(18px,2vw,28px) !important; }
+    .podium { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: end; gap: 10px; max-width: 1050px; margin: 30px auto 20px; }
+    .podium-person { display:flex; flex-direction:column; justify-content:flex-end; align-items:center; min-width:0; }
+    .podium-person .medal { font-size: clamp(34px,5vw,62px); }
+    .podium-person .winner-name { font-size: clamp(18px,2.5vw,30px); font-weight:800; overflow-wrap:anywhere; }
+    .podium-person .winner-score { font-size: clamp(14px,1.8vw,22px); }
+    .podium-block { width:100%; display:flex; align-items:center; justify-content:center; color:#172033; font-size:clamp(40px,6vw,76px); font-weight:900; border-radius:12px 12px 0 0; box-shadow:0 0 25px #ffd76a55; }
+    .podium-second .podium-block { height:150px; background:linear-gradient(#f3f5f8,#9da9b9); }
+    .podium-first .podium-block { height:210px; background:linear-gradient(#fff0a8,#d89b16); }
+    .podium-third .podium-block { height:110px; background:linear-gradient(#f3c09b,#a95d36); }
+    .final-message { color:#ffd76a; font-weight:900; font-size:clamp(25px,4vw,48px) !important; margin:25px 0 4px; }
+    .final-list { max-width:1050px; margin:22px auto; text-align:left; }
+    .final-row { display:grid; grid-template-columns:70px 1fr auto; gap:14px; align-items:center; background:#203752; padding:12px 18px; border-radius:10px; margin:8px 0; font-size:clamp(18px,2.4vw,30px) !important; }
+    .final-row .place { color:#ffd76a; font-weight:900; }
+    .confetti { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+    .confetti span { position:absolute; top:-30px; font-size:24px; animation:fall 5s linear infinite; }
+    @keyframes fall { to { transform:translateY(105vh) rotate(720deg); } }
+    @media(max-width:650px) { .podium { gap:5px; } .podium-second .podium-block{height:105px}.podium-first .podium-block{height:145px}.podium-third .podium-block{height:75px}.final-row{grid-template-columns:42px 1fr auto;padding:9px;} }
+    .welcome-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.welcome-wrap .welcome-poster {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#welcome #qr {
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+  width: 15%;
+  margin: 0;
+  padding: 8px;
+  background: white;
+  z-index: 5;
+}
+
+#welcome #qr img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+  </style>
+</head>
+<body>
+  <main class="presentation">
+ <section id="welcome">
+  <div class="welcome-wrap">
+    <img
+      src="https://raw.githubusercontent.com/Juergen1166/juergen-60-quiz/quiz-ergebnisfreigabe-zeitwertung/geburtstagsquiz.png"
+      alt="Geburtstagsquiz mit Jürgen und seiner Frau"
+      class="welcome-poster">
+    <div id="qr"></div>
+  </div>
+</section>
+
+    <section id="game" class="hidden">
+      <p id="questionNumber"></p>
+      <div id="questionArt" class="question-art" aria-hidden="true"></div>
+      <h1 id="questionText"></h1>
+      <ul id="options"></ul>
+      <h2 id="answerMessage"></h2>
+      <div id="ranking" class="hidden">
+        <h2>Aktueller Punktestand</h2>
+        <ol id="leaderboard"></ol>
+      </div>
+    </section>
+    <section id="finalPodium" class="final-screen hidden">
+      <div class="confetti" id="confetti"></div>
+      <h1>🏆 Jürgens 60 🏆</h1>
+      <p class="final-subtitle">Die Legende hat Geburtstag! · Unsere Quiz-Champions</p>
+      <div class="podium" id="podium"></div>
+      <p class="final-message">HERZLICHEN GLÜCKWUNSCH!</p>
+      <p>Danke an alle, die mitgespielt haben! 🎉</p>
+    </section>
+    <section id="finalRanking" class="final-screen hidden">
+      <h1>Die große Ergebnisliste</h1>
+      <p class="final-subtitle">Jürgens 60 · Alle Mitspieler im Überblick</p>
+      <div id="finalRows" class="final-list"></div>
+      <p class="final-message">Danke fürs Mitspielen! 🎊</p>
+    </section>
+  </main>
+
+  <div id="qrCorner" class="qr-corner hidden"></div>
+
+  <script src="config.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script type="module" src="presentation.js?v=finale1"></script>
+</body>
+</html>

@@ -7,6 +7,19 @@
   <title>Quiz – Präsentation</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+    .presentation {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
    body {
   background: linear-gradient(135deg, #fff9ed, #f3e4c9);
   color: #49391f;
@@ -221,6 +234,6 @@
 
   <script src="config.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script type="module" src="presentation.js?v=helmetfix1"></script>
+  <script type="module" src="presentation.js?v=noscroll1"></script>
 </body>
 </html>

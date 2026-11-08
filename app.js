@@ -157,7 +157,7 @@ function render(s) {
   }
 
   $('status').textContent =
-    `Frage ${q.number} von ${q.total} · ${q.points} Punkte`;
+    `Frage ${q.number} von ${q.total}`;
 
   showQuestionArt(q.number);
   $('questionTitle').textContent = q.text;

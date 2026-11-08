@@ -37,7 +37,7 @@ art.dataset.questionNumber = String(questionNumber);
   if (Number(questionNumber) === 6) {
     // Neues Fahrradhelm-Bild für Frage 6
 const helmet = document.createElement('img');
-helmet.src = 'Fahrradhelm%20mit%20rotem%20Streifen.png';
+helmet.src = 'https://raw.githubusercontent.com/Juergen1166/juergen-60-quiz/quiz-ergebnisfreigabe-zeitwertung/Fahrradhelm%20mit%20rotem%20Streifen.png';
 helmet.alt = 'Fahrradhelm';
 helmet.className = 'question-art-icon bicycle-helmet';
 helmet.style.width = '100px';

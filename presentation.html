@@ -321,6 +321,87 @@
       font-weight: 800;
     }
 
+
+    /* Abschluss-Rangliste: 20 Personen je Seite, zweispaltig */
+    #finalRanking {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: 0;
+      height: calc(100vh - 28px);
+      padding: 12px 18px;
+    }
+    #finalRanking h1 {
+      font-size: clamp(30px, 4vw, 52px);
+      margin: 2px 0 4px;
+    }
+    #finalRanking .final-subtitle {
+      margin: 2px 0 8px;
+    }
+    #finalRanking .final-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-flow: column;
+      grid-template-rows: repeat(10, minmax(0, 1fr));
+      gap: 5px 14px;
+      width: 100%;
+      max-width: 1300px;
+      margin: 6px auto;
+      flex: 1;
+      min-height: 0;
+    }
+    #finalRanking .final-row {
+      grid-template-columns: 42px minmax(0, 1fr) auto;
+      gap: 8px;
+      padding: 6px 10px;
+      margin: 0;
+      border-radius: 8px;
+      font-size: clamp(16px, 1.8vw, 23px) !important;
+      min-width: 0;
+    }
+    #finalRanking .final-row strong {
+      white-space: nowrap;
+      font-size: .88em;
+    }
+    .final-page-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin: 6px auto 2px;
+      color: #fff0bf;
+      font-weight: 800;
+      font-size: clamp(16px, 1.8vw, 22px);
+    }
+    .final-page-controls button {
+      width: auto;
+      min-width: 130px;
+      margin: 0;
+      padding: 9px 16px;
+      font-size: 16px;
+    }
+    #finalRanking .final-message {
+      margin: 6px 0 0;
+      font-size: clamp(20px, 2.5vw, 30px) !important;
+    }
+    @media (max-width: 700px) {
+      #finalRanking .final-list {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(20, minmax(0, 1fr));
+        grid-auto-flow: row;
+      }
+      #finalRanking .final-row {
+        font-size: 15px !important;
+      }
+      .final-page-controls {
+        gap: 8px;
+      }
+      .final-page-controls button {
+        min-width: 95px;
+        padding: 8px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -358,6 +439,11 @@
       <h1>Die große Ergebnisliste</h1>
       <p class="final-subtitle">Jürgens 60 · Alle Mitspieler im Überblick</p>
       <div id="finalRows" class="final-list"></div>
+      <div id="finalPageControls" class="final-page-controls">
+        <button id="finalPrev" type="button" class="secondary">← Zurück</button>
+        <span id="finalPageLabel">Seite 1</span>
+        <button id="finalNext" type="button" class="secondary">Weiter →</button>
+      </div>
       <p class="final-message">Danke fürs Mitspielen! 🎊</p>
     </section>
   </main>

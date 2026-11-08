@@ -62,6 +62,9 @@ function showQuestionArt(questionNumber) {
 const db = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
 
 const playerUrl = new URL('index.html', location.href).href;
+const FINAL_PAGE_SIZE = 20;
+let finalPage = 0;
+let finalScoresCache = [];
 
 // QR-Code in der Begrüßung
 new QRCode($('qr'), {
@@ -75,6 +78,51 @@ new QRCode($('qrCorner'), {
   text: playerUrl,
   width: 120,
   height: 120
+});
+
+function renderFinalPage(scores) {
+  finalScoresCache = scores || [];
+  const rows = $('finalRows');
+  rows.innerHTML = '';
+
+  const totalPages = Math.max(1, Math.ceil(finalScoresCache.length / FINAL_PAGE_SIZE));
+  finalPage = Math.min(finalPage, totalPages - 1);
+  const start = finalPage * FINAL_PAGE_SIZE;
+  const pageScores = finalScoresCache.slice(start, start + FINAL_PAGE_SIZE);
+
+  let previous = null;
+  let place = 0;
+  finalScoresCache.forEach((p, i) => {
+    if (previous === null || p.score !== previous) place = i + 1;
+    previous = p.score;
+    if (i < start || i >= start + FINAL_PAGE_SIZE) return;
+
+    const row = document.createElement('div');
+    row.className = 'final-row';
+    const rank = document.createElement('span');
+    rank.className = 'place';
+    rank.textContent = place + '.';
+    const name = document.createElement('span');
+    name.textContent = p.name;
+    const score = document.createElement('strong');
+    score.textContent = p.score + ' Punkte';
+    row.append(rank, name, score);
+    rows.append(row);
+  });
+
+  $('finalPageLabel').textContent = `Seite ${finalPage + 1} von ${totalPages} · Plätze ${start + 1}–${Math.min(start + pageScores.length, finalScoresCache.length)}`;
+  $('finalPrev').disabled = finalPage === 0;
+  $('finalNext').disabled = finalPage >= totalPages - 1;
+}
+
+$('finalPrev').addEventListener('click', () => {
+  if (finalPage > 0) finalPage--;
+  renderFinalPage(finalScoresCache);
+});
+$('finalNext').addEventListener('click', () => {
+  const totalPages = Math.max(1, Math.ceil(finalScoresCache.length / FINAL_PAGE_SIZE));
+  if (finalPage < totalPages - 1) finalPage++;
+  renderFinalPage(finalScoresCache);
 });
 
 async function refresh() {
@@ -95,19 +143,7 @@ async function refresh() {
       if (data.final_list_shown) {
         $('finalPodium').classList.add('hidden');
         $('finalRanking').classList.remove('hidden');
-        const rows = $('finalRows');
-        rows.innerHTML = '';
-        let previous = null, place = 0;
-        scores.forEach((p, i) => {
-          if (previous === null || p.score !== previous) place = i + 1;
-          previous = p.score;
-          const row = document.createElement('div');
-          row.className = 'final-row';
-          const rank = document.createElement('span'); rank.className = 'place'; rank.textContent = place + '.';
-          const name = document.createElement('span'); name.textContent = p.name;
-          const score = document.createElement('strong'); score.textContent = p.score + ' Punkte';
-          row.append(rank, name, score); rows.append(row);
-        });
+        renderFinalPage(scores);
       } else {
         $('finalRanking').classList.add('hidden');
         $('finalPodium').classList.remove('hidden');
@@ -199,7 +235,7 @@ async function refresh() {
 
       $('leaderboard').innerHTML = '';
 
-      (data.scores || []).slice(0, 10).forEach(p => {
+      (data.scores || []).slice(0, 12).forEach(p => {
         const li = document.createElement('li');
         li.textContent = `${p.name} – ${p.score} Punkte`;
         $('leaderboard').append(li);
